@@ -64,7 +64,7 @@ jobs:
           git config user.name "GitHub Action"
           git config user.email "Github@action.com"
 
-      - name: Creating android_template branch
+      - name: Creating kmm_template branch
         run: |
           git checkout -b kmm_template
           git log
@@ -72,7 +72,7 @@ jobs:
 
       - name: Merge UI branch
         run: |
-          git merge origin/${{ github.event.inputs.ui }}
+          git merge origin/${{ github.event.inputs.ui }} --allow-unrelated-histories
 
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
