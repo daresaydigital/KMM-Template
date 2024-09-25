@@ -1,4 +1,4 @@
-name: Template configuration for Android project
+name: Template configuration for KMM project
 
 on:
   workflow_dispatch:
