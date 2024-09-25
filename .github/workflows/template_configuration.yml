@@ -1,0 +1,128 @@
+name: Template configuration for Android project
+
+on:
+  workflow_dispatch:
+    inputs:
+      ui:
+        description: 'Select UI configuration'
+        required: true
+        default: 'compose'
+        type: choice
+        options:
+          - compose
+          - compose_swift_ui
+      di:
+        description: 'Select Di framework'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - koin
+      networking:
+        description: 'Select Networking framework'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - ktor
+          - graphQL
+      navigation:
+        description:  'Select Navigation framework'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - compose_navigation
+          - voyager_navigation
+      view_model:
+        description: 'Select ViewModel implementation'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - view_model
+          - voyager_screen_model
+jobs:
+  template_generation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Git configuration
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "Github@action.com"
+
+      - name: Creating android_template branch
+        run: |
+          git checkout -b kmm_template
+          git log
+          git branch -a
+
+      - name: Merge UI branch
+        run: |
+          git merge origin/${{ github.event.inputs.ui }}
+
+      - name: Merge DI branch
+        if: github.event.inputs.di != 'none'
+        run: |
+          git merge origin/${{ github.event.inputs.di }}
+
+      - name: Merge Networking branch
+        if: github.event.inputs.networking != 'none'
+        run: |
+          git merge origin/${{ github.event.inputs.networking }}
+
+      - name: Merge Navigation branch
+        if: github.event.inputs.navigation != 'none'
+        run: |
+          git merge origin/${{ github.event.inputs.navigation }}
+
+      - name: Merge View Model branch
+        if: github.event.inputs.view_model != 'none'
+        run: |
+          git merge origin/${{ github.event.inputs.view_model }}
+
+      - name: Removing unnecessary files and folders
+        run: |
+          rm -rf ./git
+          rm -rf ./github
+          rm -rf scripts
+
+      - name: Specify name of repository
+        id: repository_name
+        run: |
+          UI="${{ github.event.inputs.ui }}"
+          DI="${{ github.event.inputs.di }}"
+          NETWORKING="${{ github.event.inputs.networking }}"
+          NAVIGATION="${{ github.event.inputs.navigation }}"
+          VIEW_MODEL="${{ github.event.inputs.view_model }}"
+          NAME=""
+
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL"; do
+            if [ "$item" != "none" ]; then
+              [ -n "$NAME" ] && NAME="${NAME}_"
+              NAME="${NAME}${item}"
+            fi
+          done
+
+          echo "::set-output name=repository_name::$NAME"
+
+      - name: Upload project artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "template_with_${{ steps.repository_name.outputs.repository_name }}"
+          path: .
+          retention-days: 1
+
