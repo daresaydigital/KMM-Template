@@ -76,6 +76,7 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
+          git checkout ${{ github.event.inputs.ui }}
           git checkout -b kmm_template
           git log
           git branch -a
