@@ -1,0 +1,11 @@
+CREATE TABLE User (
+    id TEXT PRIMARY KEY NOT NULL,
+    user_name TEXT NOT NULL
+);
+
+insertUser:
+INSERT INTO User (id, user_name)
+VALUES (?, ?);
+
+getAllUsers:
+SELECT * FROM User;
