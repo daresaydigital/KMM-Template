@@ -46,7 +46,7 @@ on:
           - none
           - view_model
           - voyager_screen_model
-      local_storageL:
+      local_storage:
         description: 'Select framework for local storage'
         required: false
         type: choice
