@@ -4,13 +4,15 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.sqlDelightVersion)
 }
 
 kotlin {
     androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
-        compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+        compilations.all {
+            kotlinOptions {
+                jvmTarget = "1.8"
+            }
         }
     }
     
@@ -27,7 +29,7 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
-
+            implementation(libs.squareup.android.driver)
 
 
 
@@ -55,7 +57,8 @@ kotlin {
 
         }
         commonMain.dependencies {
-
+            implementation(libs.squareup.runtime)
+            implementation(libs.squareup.coroutine)
 
 
 
@@ -83,7 +86,7 @@ kotlin {
 
         }
         iosMain.dependencies {
-
+            implementation(libs.squareup.native.driver)
 
 
 
@@ -117,10 +120,18 @@ android {
     namespace = "co.daresay.kmmtemplate.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+sqldelight {
+    databases {
+        create("AppDatabase") {
+            packageName.set("co.daresay.kmmtemplate.database")
+        }
     }
 }
