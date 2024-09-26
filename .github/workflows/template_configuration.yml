@@ -46,6 +46,16 @@ on:
           - none
           - view_model
           - voyager_screen_model
+      local_storageL:
+        description: 'Select framework for local storage'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - sql_delight
+          - realm
+          - multiplatform_settings
 jobs:
   template_generation:
     runs-on: ubuntu-latest
@@ -94,6 +104,16 @@ jobs:
         run: |
           git merge origin/${{ github.event.inputs.view_model }}
 
+      - name: Merge Local Storage Branch
+        if: github.event.inputs.local_storage != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.local_storage }}" == "ui" ]]; then  
+            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.local_storage }}"  
+          fi  
+          git merge origin/$BRANCH  
+
       - name: Removing unnecessary files and folders
         run: |
           rm -rf ./git
@@ -108,9 +128,10 @@ jobs:
           NETWORKING="${{ github.event.inputs.networking }}"
           NAVIGATION="${{ github.event.inputs.navigation }}"
           VIEW_MODEL="${{ github.event.inputs.view_model }}"
+          LOCAL_STORAGE="${{ github.event.inputs.local_storage }}"
           NAME=""
 
-          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL"; do
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE"; do
             if [ "$item" != "none" ]; then
               [ -n "$NAME" ] && NAME="${NAME}_"
               NAME="${NAME}${item}"
