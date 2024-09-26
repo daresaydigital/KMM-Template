@@ -108,7 +108,7 @@ jobs:
       - name: Merge Local Storage Branch
         if: github.event.inputs.local_storage != 'none'
         run: |
-          if [[ "${{ github.event.inputs.local_storage }}" == "ui" ]]; then  
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
             BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
           else  
             BRANCH="${{ github.event.inputs.local_storage }}"  
