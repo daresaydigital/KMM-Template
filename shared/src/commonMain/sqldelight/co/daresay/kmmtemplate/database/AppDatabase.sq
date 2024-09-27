@@ -1,11 +1,14 @@
+import co.daresay.kmmtemplate.data.storage.adapters.DateTypeClass;
+
 CREATE TABLE User (
     id TEXT PRIMARY KEY NOT NULL,
-    user_name TEXT NOT NULL
+    user_name TEXT NOT NULL,
+    addedAt TEXT AS DateTypeClass DEFAULT ""
 );
 
 insertUser:
-INSERT INTO User (id, user_name)
-VALUES (?, ?);
+INSERT INTO User (id, user_name, addedAt)
+VALUES (?, ?, ?);
 
 getAllUsers:
 SELECT * FROM User;
