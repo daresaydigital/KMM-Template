@@ -56,7 +56,7 @@ kotlin {
         }
         commonMain.dependencies {
 
-
+            implementation(libs.multiplatform.settings)
 
 
 
