@@ -30,6 +30,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(libs.multiplatform.settings)
 
         }
         iosMain.dependencies {
