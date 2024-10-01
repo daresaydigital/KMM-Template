@@ -126,7 +126,7 @@ jobs:
         if: github.event.inputs.local_preferences != 'none'
         run: |
           if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
+            BRANCH="${{ github.event.inputs.local_preferences }}_swift_ui"  
           else  
             BRANCH="${{ github.event.inputs.local_preferences }}"  
           fi  
