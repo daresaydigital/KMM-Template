@@ -120,9 +120,10 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
-          git merge origin/$BRANCH  
+          git merge origin/$BRANCH
 
       - name: Merge Local Preferences Branch
+        id: merge-branch
         if: github.event.inputs.local_preferences != 'none'
         run: |
           if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
@@ -130,7 +131,16 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.local_preferences }}"  
           fi  
-          git merge origin/$BRANCH  
+          git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Remove conflict markers
+        if: ${{ steps.merge-branch.outcome == 'failure' }}
+        run: |
+          chmod +x scripts/fix_conflicts.sh
+          ./scripts/fix_conflicts.sh
+          git add .
+          git commit -m "Fixed merge conflicts"
 
       - name: Removing unnecessary files and folders
         run: |
