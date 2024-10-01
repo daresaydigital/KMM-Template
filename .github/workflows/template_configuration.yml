@@ -83,7 +83,7 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
-          git checkout ${{ github.event.inputs.ui }}
+          git checkout master
           git checkout -b kmm_template
           git log
           git branch -a
@@ -138,7 +138,7 @@ jobs:
         if: ${{ steps.merge-branch.outcome == 'failure' }}
         run: |
           chmod +x scripts/fix_conflicts.sh
-          ./scripts/fix_conflicts.sh
+          scripts/fix_conflicts.sh
           git add .
           git commit -m "Fixed merge conflicts"
 
