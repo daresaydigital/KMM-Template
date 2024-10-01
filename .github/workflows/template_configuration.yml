@@ -46,6 +46,23 @@ on:
           - none
           - view_model
           - voyager_screen_model
+      local_storage:
+        description: 'Select framework for local storage'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - sql_delight
+          - realm
+      local_preferences:
+        description: 'Select framework for local preferences'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - multiplatform_settings
 jobs:
   template_generation:
     runs-on: ubuntu-latest
@@ -66,6 +83,7 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
+          git checkout master
           git checkout -b kmm_template
           git log
           git branch -a
@@ -94,6 +112,36 @@ jobs:
         run: |
           git merge origin/${{ github.event.inputs.view_model }}
 
+      - name: Merge Local Storage Branch
+        if: github.event.inputs.local_storage != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.local_storage }}"  
+          fi  
+          git merge origin/$BRANCH
+
+      - name: Merge Local Preferences Branch
+        id: merge-branch
+        if: github.event.inputs.local_preferences != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.local_preferences }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.local_preferences }}"  
+          fi  
+          git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Remove conflict markers
+        if: ${{ steps.merge-branch.outcome == 'failure' }}
+        run: |
+          chmod +x scripts/fix_conflicts.sh
+          scripts/fix_conflicts.sh
+          git add .
+          git commit -m "Fixed merge conflicts"
+
       - name: Removing unnecessary files and folders
         run: |
           rm -rf ./git
@@ -108,9 +156,11 @@ jobs:
           NETWORKING="${{ github.event.inputs.networking }}"
           NAVIGATION="${{ github.event.inputs.navigation }}"
           VIEW_MODEL="${{ github.event.inputs.view_model }}"
+          LOCAL_STORAGE="${{ github.event.inputs.local_storage }}"
+          LOCAL_PREFERENCES="${{ github.event.inputs.local_preferences }}"
           NAME=""
 
-          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL"; do
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE" "$LOCAL_PREFERENCES"; do
             if [ "$item" != "none" ]; then
               [ -n "$NAME" ] && NAME="${NAME}_"
               NAME="${NAME}${item}"
