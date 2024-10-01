@@ -90,7 +90,7 @@ jobs:
 
       - name: Merge UI branch
         run: |
-          git merge origin/${{ github.event.inputs.ui }} --allow-unrelated-histories -s ours
+          git merge origin/${{ github.event.inputs.ui }} --allow-unrelated-histories
 
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
