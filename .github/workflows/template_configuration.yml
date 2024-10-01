@@ -55,6 +55,13 @@ on:
           - none
           - sql_delight
           - realm
+      local_preferences:
+        description: 'Select framework for local preferences'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
           - multiplatform_settings
 jobs:
   template_generation:
@@ -115,6 +122,16 @@ jobs:
           fi  
           git merge origin/$BRANCH  
 
+      - name: Merge Local Preferences Branch
+        if: github.event.inputs.local_preferences != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.local_preferences }}"  
+          fi  
+          git merge origin/$BRANCH  
+
       - name: Removing unnecessary files and folders
         run: |
           rm -rf ./git
@@ -130,9 +147,10 @@ jobs:
           NAVIGATION="${{ github.event.inputs.navigation }}"
           VIEW_MODEL="${{ github.event.inputs.view_model }}"
           LOCAL_STORAGE="${{ github.event.inputs.local_storage }}"
+          LOCAL_PREFERENCES="${{ github.event.inputs.local_preferences }}"
           NAME=""
 
-          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE"; do
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE" "$LOCAL_PREFERENCES"; do
             if [ "$item" != "none" ]; then
               [ -n "$NAME" ] && NAME="${NAME}_"
               NAME="${NAME}${item}"
