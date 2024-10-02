@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.apollo)
 }
 
 kotlin {
@@ -55,6 +56,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(libs.apollo.runtime)
 
 
 
@@ -122,5 +124,11 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("co.daresay.kmmtemplate")
     }
 }
