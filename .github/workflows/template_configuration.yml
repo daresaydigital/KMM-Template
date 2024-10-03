@@ -63,6 +63,11 @@ on:
         options:
           - none
           - multiplatform_settings
+      package_name:
+        description: 'Input package name for project'
+        required: false
+        type: string
+        default: 'none'
 jobs:
   template_generation:
     runs-on: ubuntu-latest
@@ -147,6 +152,10 @@ jobs:
           rm -rf ./git
           rm -rf ./github
           rm -rf scripts
+      - name: Rename project package
+        if: github.event.inputs.package_name != 'none'
+        run: |
+          grep -rl 'co.daresay.kmmtemplate' . | xargs sed -i '' 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g'
 
       - name: Specify name of repository
         id: repository_name
