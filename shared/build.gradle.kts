@@ -30,6 +30,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(libs.koin.core)
 
         }
         iosMain.dependencies {
