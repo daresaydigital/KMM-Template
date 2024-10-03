@@ -88,14 +88,14 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
-          git checkout master
+          git checkout ${{ github.event.inputs.ui }}
           git checkout -b kmm_template
           git log
           git branch -a
 
       - name: Merge UI branch
         run: |
-          git merge origin/${{ github.event.inputs.ui }} --allow-unrelated-histories
+          git merge origin/master
 
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
