@@ -155,7 +155,8 @@ jobs:
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
         run: |
-          grep -rl 'co.daresay.kmmtemplate' . | xargs sed -i '' 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g'
+          echo "${{ github.event.inputs.package_name }}:
+          find . -type f -exec sed -i '' 's/co.daresay.kmmtemplate/new.package/g' {} +
 
       - name: Specify name of repository
         id: repository_name
