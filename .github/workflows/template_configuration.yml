@@ -156,6 +156,8 @@ jobs:
         if: github.event.inputs.package_name != 'none'
         run: |
           echo "${{ github.event.inputs.package_name }}"
+          echo 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g'
+          echo 's/co.daresay.kmmtemplate/"${{ github.event.inputs.package_name }}/g"'
           find . -type f -exec sed -i '' 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g' {} +
 
       - name: Specify name of repository
