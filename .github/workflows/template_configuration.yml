@@ -158,7 +158,8 @@ jobs:
           echo "${{ github.event.inputs.package_name }}"
           echo 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g'
           echo 's/co.daresay.kmmtemplate/"${{ github.event.inputs.package_name }}/g"'
-          find . -type f -exec sed -i '' 's/co.daresay.kmmtemplate/${{ github.event.inputs.package_name }}/g' {} +
+          chmod +x scripts/rename_package.sh
+          ./scripts/rename_package.sh ${{ github.event.inputs.package_name }}
 
       - name: Specify name of repository
         id: repository_name
