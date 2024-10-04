@@ -147,11 +147,6 @@ jobs:
           git add .
           git commit -m "Fixed merge conflicts"
 
-      - name: Removing unnecessary files and folders
-        run: |
-          rm -rf ./git
-          rm -rf ./github
-          rm -rf scripts
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
         run: |
@@ -160,9 +155,14 @@ jobs:
           echo 's/co.daresay.kmmtemplate/"${{ github.event.inputs.package_name }}/g"'
           ls
           pwd
-          chmod +x /scripts/rename_package.sh
           chmod +x scripts/rename_package.sh
           ./scripts/rename_package.sh ${{ github.event.inputs.package_name }}
+
+      - name: Removing unnecessary files and folders
+        run: |
+          rm -rf ./git
+          rm -rf ./github
+          rm -rf scripts
 
       - name: Specify name of repository
         id: repository_name
