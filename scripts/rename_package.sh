@@ -14,11 +14,8 @@ new_path=$(echo "$1" | tr "." "/")
 
 path="composeApp/src/androidMain/kotlin/co/daresay/kmmtemplate"
 
-# Extract the part to keep
-keep_part="${path##*co/daresay/kmmtemplate}"
-
 # Construct the new path
-new_full_path="composeApp/src/androidMain/kotlin/$new_path/$keep_part"
+new_full_path="composeApp/src/androidMain/kotlin/$new_path"
 
 # Move the kmmtemplate folder and its contents
 mv "$path" "$new_full_path"
