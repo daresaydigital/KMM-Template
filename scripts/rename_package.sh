@@ -1,18 +1,23 @@
 #!/bin/bash
 
-find . -type f -exec perl -pi -e "s/co.daresay.kmmtemplate/$1/g" {} +
+if [ -z "$1" ]; then
+  echo "Error: Please provide the new package name as an argument."
+  exit 1
+fi
 
-old_path="co/daresay/kmmtemplate"
-new_path=$(echo "$1" | tr "." "/")
+new_package="$1"
+new_path="${new_package//./\/}"
 
-find . -type d -path "*/$old_path" -execdir sh -c \
+find . -type f -exec perl -pi -e "s/co\.daresay\.kmmtemplate/$new_package/g" {} +
+
+find . -type d -path "*/co/daresay/kmmtemplate" -execdir sh -c \
 '
-  old_parts=(`echo "$0" | tr "/" " "`)
+  old_path="$0"
   new_path="$1"
   mkdir -p "$new_path"
-  mv "${old_parts[2]}" "$new_path"
-  rmdir "${old_parts[1]}"
-  rmdir "${old_parts[0]}"
-' "$old_path" "$new_path" \;
+  mv "${old_path##*/}" "$new_path"
+  rmdir "${old_path%/*}"
+  rmdir "${old_path%/co/daresay}"
+' "co/daresay/kmmtemplate" "$new_path" \;
 
 exit 0
