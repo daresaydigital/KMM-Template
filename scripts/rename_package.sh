@@ -16,6 +16,11 @@ find . -type d -path "*/co/daresay/kmmtemplate" -execdir sh -c \
   new_path="$1"
   mkdir -p "$new_path"
   mv "${old_path##*/}" "$new_path"
+  parent_dir="${old_path%/*}"
+  parent_dir="${parent_dir##*co/daresay/}"
+  if [ ! -z "$parent_dir" ]; then
+    mv "$new_path" "$parent_dir"
+  fi
   rmdir "${old_path%/*}"
   rmdir "${old_path%/co/daresay}"
 ' "co/daresay/kmmtemplate" "$new_path" \;
