@@ -1,0 +1,11 @@
+name: Resolve conflicts
+runs:
+  using: composite
+  steps:
+    - name: Remove conflict markers
+      run: |
+        chmod +x scripts/fix_conflicts.sh
+        scripts/fix_conflicts.sh
+        git add .
+        git commit -m "Fixed merge conflicts"
+      shell: bashonflicts"

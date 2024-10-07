@@ -158,13 +158,17 @@ jobs:
           git merge origin/$BRANCH
         continue-on-error: true
 
-      - name: Remove conflict markers
-        if: ${{ steps.merge-branch.outcome == 'failure' }}
-        run: |
-          chmod +x scripts/fix_conflicts.sh
-          scripts/fix_conflicts.sh
-          git add .
-          git commit -m "Fixed merge conflicts"
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
+        if: ${{ failure() }}
+
+#      - name: Remove conflict markers
+#        if: ${{ steps.merge-branch.outcome == 'failure' }}
+#        run: |
+#          chmod +x scripts/fix_conflicts.sh
+#          scripts/fix_conflicts.sh
+#          git add .
+#          git commit -m "Fixed merge conflicts"
 
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
