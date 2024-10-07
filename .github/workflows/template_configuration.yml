@@ -105,7 +105,12 @@ jobs:
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
         run: |
-          git merge origin/${{ github.event.inputs.di }}
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.di }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.local_storage }}"  
+          fi  
+          git merge origin/$BRANCH
 
       - name: Merge Networking branch
         if: github.event.inputs.networking != 'none'
@@ -123,6 +128,7 @@ jobs:
           git merge origin/${{ github.event.inputs.view_model }}
 
       - name: Merge Local Storage Branch
+        id: merge-branch-local-storage
         if: github.event.inputs.local_storage != 'none'
         run: |
           if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
@@ -131,6 +137,14 @@ jobs:
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
           git merge origin/$BRANCH
+
+      - name: Remove conflict markers
+        if: ${{ steps.merge-branch-local-storage.outcome == 'failure' }}
+        run: |
+          chmod +x scripts/fix_conflicts.sh
+          scripts/fix_conflicts.sh
+          git add .
+          git commit -m "Fixed merge conflicts"
 
       - name: Merge Local Preferences Branch
         id: merge-branch
