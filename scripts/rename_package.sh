@@ -12,7 +12,7 @@ find . -type f -exec perl -pi -e "s/co\.daresay\.kmmtemplate/$new_package/g" {} 
 
 new_path=$(echo "$1" | tr "." "/")
 
-path="composeApp/src/androidMain/kotlin/co/daresay/kmmtemplate"
+path="composeApp/src/androidMain/kotlin/co/daresay/kmmtemplate/*"
 
 # Construct the new path
 new_full_path="composeApp/src/androidMain/kotlin/$new_path"
@@ -22,7 +22,7 @@ mkdir -p "$new_full_path"
 ls -la
 echo "$new_full_path"
 echo "$path"
-cp -a "$path" "$new_full_path"
+mv "$path" "$new_full_path"
 
 # Extract the part to be removed
 #remove_part="${path%/*co*}"
