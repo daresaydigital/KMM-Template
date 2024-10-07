@@ -111,11 +111,24 @@ jobs:
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
           git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
 
       - name: Merge Networking branch
         if: github.event.inputs.networking != 'none'
         run: |
-          git merge origin/${{ github.event.inputs.networking }}
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.networking }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.networking }}"  
+          fi  
+          git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
 
       - name: Merge Navigation branch
         if: github.event.inputs.navigation != 'none'
@@ -137,14 +150,10 @@ jobs:
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
           git merge origin/$BRANCH
+        continue-on-error: true
 
-      - name: Remove conflict markers
-        if: ${{ steps.merge-branch-local-storage.outcome == 'failure' }}
-        run: |
-          chmod +x scripts/fix_conflicts.sh
-          scripts/fix_conflicts.sh
-          git add .
-          git commit -m "Fixed merge conflicts"
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
 
       - name: Merge Local Preferences Branch
         id: merge-branch
@@ -160,14 +169,6 @@ jobs:
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
-
-#      - name: Remove conflict markers
-#        if: ${{ steps.merge-branch.outcome == 'failure' }}
-#        run: |
-#          chmod +x scripts/fix_conflicts.sh
-#          scripts/fix_conflicts.sh
-#          git add .
-#          git commit -m "Fixed merge conflicts"
 
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
