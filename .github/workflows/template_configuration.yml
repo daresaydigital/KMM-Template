@@ -115,6 +115,7 @@ jobs:
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Merge Networking branch
         if: github.event.inputs.networking != 'none'
@@ -129,6 +130,7 @@ jobs:
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Merge Navigation branch
         if: github.event.inputs.navigation != 'none'
@@ -154,6 +156,7 @@ jobs:
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Merge Local Preferences Branch
         id: merge-branch
@@ -169,6 +172,7 @@ jobs:
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
