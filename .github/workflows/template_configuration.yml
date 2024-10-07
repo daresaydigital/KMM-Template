@@ -3,6 +3,11 @@ name: Template configuration for KMM project
 on:
   workflow_dispatch:
     inputs:
+      package_name:
+        description: 'Input package name for project'
+        required: true
+        type: string
+        default: 'none'
       ui:
         description: 'Select UI configuration'
         required: true
@@ -63,16 +68,16 @@ on:
         options:
           - none
           - multiplatform_settings
-      package_name:
-        description: 'Input package name for project'
-        required: false
-        type: string
-        default: 'none'
 jobs:
   template_generation:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Pakage validation
+        run: |
+          chmod +x scripts/package_name_validation.sh
+          scripts/package_name_validation.sh ${{ github.event.inputs.package_name }}
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
