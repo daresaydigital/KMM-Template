@@ -73,15 +73,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Pakage validation
-        run: |
-          chmod +x scripts/package_name_validation.sh
-          scripts/package_name_validation.sh ${{ github.event.inputs.package_name }}
-
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           ref: master
+
+      - name: Package name validation
+        run: |
+          chmod +x scripts/package_name_validation.sh
+          scripts/package_name_validation.sh ${{ github.event.inputs.package_name }}
 
       - name: Fetch all branches
         run: git fetch --all
