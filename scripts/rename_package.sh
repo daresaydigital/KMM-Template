@@ -19,7 +19,8 @@ new_full_path="composeApp/src/androidMain/kotlin/$new_path"
 
 # Move the kmmtemplate folder and its contents
 mkdir -p "$new_full_path"
-mv "$path" "$new_full_path"
+ls -la
+cp -a "$path" "$new_full_path"
 
 # Extract the part to be removed
 remove_part="${path%/*co*}"
