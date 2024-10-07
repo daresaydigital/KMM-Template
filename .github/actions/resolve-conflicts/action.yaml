@@ -8,4 +8,4 @@ runs:
         scripts/fix_conflicts.sh
         git add .
         git commit -m "Fixed merge conflicts"
-      shell: bashonflicts"
+      shell: bash
