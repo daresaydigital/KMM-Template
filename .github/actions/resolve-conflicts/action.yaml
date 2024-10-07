@@ -2,7 +2,17 @@ name: Resolve conflicts
 runs:
   using: composite
   steps:
+    - name: Check for merge conflicts
+      id: check-merge
+      run: |
+        if git merge-base --is-ancestor origin/$BRANCH HEAD; then
+          echo "::set-output name=has_conflicts::false"
+        else
+          echo "::set-output name=has_conflicts::true"
+        fi
+      shell: bash
     - name: Remove conflict markers
+      if: steps.check-merge.outputs.has_conflicts == 'true'
       run: |
         chmod +x scripts/fix_conflicts.sh
         scripts/fix_conflicts.sh

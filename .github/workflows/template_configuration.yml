@@ -156,11 +156,10 @@ jobs:
             BRANCH="${{ github.event.inputs.local_preferences }}"  
           fi  
           git merge origin/$BRANCH
-#        continue-on-error: true
+        continue-on-error: true
 
       - name: Resolve conflicts
         uses: ./.github/actions/resolve-conflicts
-        if: ${{ failure() }}
 
 #      - name: Remove conflict markers
 #        if: ${{ steps.merge-branch.outcome == 'failure' }}
