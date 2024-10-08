@@ -55,7 +55,10 @@ kotlin {
 
         }
         commonMain.dependencies {
-
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.bottom.sheet.navigator)
+            implementation(libs.voyager.tab.navigator)
+            implementation(libs.voyager.transitions)
 
 
 
