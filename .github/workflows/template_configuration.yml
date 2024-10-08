@@ -136,12 +136,32 @@ jobs:
       - name: Merge Navigation branch
         if: github.event.inputs.navigation != 'none'
         run: |
-          git merge origin/${{ github.event.inputs.navigation }}
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.navigation }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.navigation }}"  
+          fi  
+          git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Merge View Model branch
         if: github.event.inputs.view_model != 'none'
         run: |
-          git merge origin/${{ github.event.inputs.view_model }}
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.view_model }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.view_model }}"  
+          fi  
+          git merge origin/$BRANCH
+        continue-on-error: true
+
+      - name: Resolve conflicts
+        uses: ./.github/actions/resolve-conflicts
+        continue-on-error: true
 
       - name: Merge Local Storage Branch
         id: merge-branch-local-storage
