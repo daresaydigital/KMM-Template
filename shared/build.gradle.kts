@@ -40,6 +40,12 @@ kotlin {
     }
 }
 
+apollo {
+    service("service") {
+        packageName.set("co.daresay.kmmtemplate")
+    }
+}
+
 android {
     namespace = "co.daresay.kmmtemplate.shared"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
@@ -49,11 +55,5 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-}
-
-apollo {
-    service("service") {
-        packageName.set("co.daresay.kmmtemplate")
     }
 }
