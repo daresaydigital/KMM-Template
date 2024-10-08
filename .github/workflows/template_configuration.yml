@@ -49,6 +49,7 @@ on:
         default: 'none'
         options:
           - none
+          - decompose
           - view_model
           - voyager_screen_model
       local_storage:
