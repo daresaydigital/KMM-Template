@@ -79,9 +79,11 @@ jobs:
         with:
           ref: master
 
+      - name: Making scripts runnable
+        run: chmod +x scripts/*.sh
+
       - name: Package name validation
         run: |
-          chmod +x scripts/package_name_validation.sh
           scripts/package_name_validation.sh ${{ github.event.inputs.package_name }}
 
       - name: Fetch all branches
@@ -96,8 +98,6 @@ jobs:
         run: |
           git checkout ${{ github.event.inputs.ui }}
           git checkout -b kmm_template
-          git log
-          git branch -a
 
       - name: Merge UI branch
         run: |
@@ -111,11 +111,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Merge Networking branch
@@ -126,11 +126,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.networking }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Merge Navigation branch
@@ -141,11 +141,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.navigation }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Merge View Model branch
@@ -156,11 +156,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.view_model }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Merge Local Storage Branch
@@ -172,11 +172,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.local_storage }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Merge Local Preferences Branch
@@ -188,11 +188,11 @@ jobs:
           else  
             BRANCH="${{ github.event.inputs.local_preferences }}"  
           fi  
-          git merge origin/$BRANCH
-        continue-on-error: true
-
-      - name: Resolve conflicts
-        uses: ./.github/actions/resolve-conflicts
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
         continue-on-error: true
 
       - name: Rename project package
@@ -203,7 +203,6 @@ jobs:
           echo 's/co.daresay.kmmtemplate/"${{ github.event.inputs.package_name }}/g"'
           ls
           pwd
-          chmod +x scripts/rename_package.sh
           ./scripts/rename_package.sh ${{ github.event.inputs.package_name }}
 
       - name: Removing unnecessary files and folders
