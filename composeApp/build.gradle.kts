@@ -43,6 +43,9 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.voyager.screenmodel)
+            //remove this dependencies if koin doesn't use as DI
+            implementation(libs.voyager.koin)
 
         }
         iosMain.dependencies {
