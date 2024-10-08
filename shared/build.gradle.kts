@@ -30,6 +30,9 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(libs.voyager.screenmodel)
+            //remove this dependencies if koin doesn't use as DI
+            implementation(libs.voyager.koin)
 
         }
         iosMain.dependencies {
