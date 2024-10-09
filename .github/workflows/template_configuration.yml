@@ -101,7 +101,7 @@ jobs:
 
       - name: Merge UI branch
         run: |
-          git merge master --allow-unrelated-histories
+          git merge -m "Merge message" master --allow-unrelated-histories
 
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
