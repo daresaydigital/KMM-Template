@@ -105,7 +105,7 @@ jobs:
 
       - name: Merge UI branch
         run: |
-          git merge -s theirs -m "Merge message" master --allow-unrelated-histories || {
+          git merge -m "Merge message" master --allow-unrelated-histories || {
             git add .
             git commit -m "Fixed merge conflicts"
           }
