@@ -80,6 +80,9 @@ jobs:
           fetch-depth: 0
           ref: master
 
+      - name: Install latest Git
+        run: sudo apt-get update && sudo apt-get install -y git
+
       - name: Making scripts runnable
         run: chmod +x scripts/*.sh
 
@@ -103,8 +106,6 @@ jobs:
       - name: Merge UI branch
         run: |
           git merge -s theirs -m "Merge message" master --allow-unrelated-histories || {
-            git log
-            scripts/fix_conflicts.sh
             git add .
             git commit -m "Fixed merge conflicts"
           }
