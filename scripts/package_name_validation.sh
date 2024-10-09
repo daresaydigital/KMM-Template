@@ -22,7 +22,7 @@ keywords=(
 contains_keyword() {
     local string="$1"
     for keyword in "${keywords[@]}"; do
-        if [[ "$string" == "$keyword" ]]; then
+        if [[ "$string" == *"$keyword"* ]]; then
             return 0  # Found a keyword
         fi
     done
