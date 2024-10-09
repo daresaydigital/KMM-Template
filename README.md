@@ -19,7 +19,7 @@ KMMTemplateWizard is a GitHub Action that helps you generate a KMM (Kotlin Multi
 3. **Select the `Template configuration for KMM project` workflow.**
 4. **Click the `Run workflow` button.**
 5. **Follow the wizard's instructions** to select your desired dependencies.
-6. **You can download the generated project as a ZIP file.
+6. **You can download the generated project as a ZIP file.**
 
 ## How to Contribute
 
