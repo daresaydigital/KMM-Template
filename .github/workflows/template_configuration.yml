@@ -69,6 +69,14 @@ on:
         options:
           - none
           - multiplatform_settings
+      linter:
+        description: 'Select static analysis tool'
+        required: false
+        type: choice
+        default: 'none'
+        options:
+          - none
+          - detekt
 jobs:
   template_generation:
     runs-on: ubuntu-latest
@@ -202,6 +210,21 @@ jobs:
           }
         continue-on-error: true
 
+      - name: Merge Linter Branch
+        if: github.event.inputs.linter != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.linter }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.linter }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
       - name: Rename project package
         if: github.event.inputs.package_name != 'none'
         run: |
@@ -228,9 +251,10 @@ jobs:
           VIEW_MODEL="${{ github.event.inputs.view_model }}"
           LOCAL_STORAGE="${{ github.event.inputs.local_storage }}"
           LOCAL_PREFERENCES="${{ github.event.inputs.local_preferences }}"
+          LINTER="${{ github.event.inputs.linter }}"
           NAME=""
 
-          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE" "$LOCAL_PREFERENCES"; do
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE" "$LOCAL_PREFERENCES" "$LINTER"; do
             if [ "$item" != "none" ]; then
               [ -n "$NAME" ] && NAME="${NAME}_"
               NAME="${NAME}${item}"
