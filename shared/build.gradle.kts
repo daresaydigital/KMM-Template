@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.detekt)
 }
 
 kotlin {
@@ -14,6 +15,17 @@ kotlin {
         }
     }
     
+
+    detekt {
+        // Specify detekt configuration especially for shared module
+        config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+        buildUponDefaultConfig = true
+        source.setFrom("src/commonMain/kotlin", "src/androidMain/kotlin", "src/iosMain/kotlin")
+        dependencies {
+            detektPlugins(libs.detekt.formatting)
+        }
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -123,4 +135,14 @@ android {
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
     }
+}
+
+tasks.withType<io.gitlab.arturbosch.detekt.Detekt>().configureEach {
+    jvmTarget = "11" // or "11" based on your project setup
+    classpath = files(
+        // Include necessary dependencies here
+        "$rootDir/shared/build/classes/kotlin/main",
+        "$rootDir/shared/build/tmp/kotlin-classes/commonMain",
+        configurations.getByName("detekt")
+    )
 }
