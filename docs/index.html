@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KMM Template Wizard</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        select, input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<h1>KMM Template Wizard</h1>
+<p>This GitHub Action helps you generate a KMM project with your desired dependencies.</p>
+
+<h2>Inputs</h2>
+<form id="input-form">
+    <label for="package_name">Package Name:</label>
+    <input type="text" id="package_name" name="package_name" value="none" required>
+
+    <label for="ui">UI:</label>
+    <select id="ui" name="ui">
+        <option value="compose" selected>Compose</option>
+        <option value="compose_swift_ui">Compose + Swift UI</option>
+    </select>
+
+    <label for="di">DI:</label>
+    <select id="di" name="di">
+        <option value="none" selected>None</option>
+        <option value="koin">Koin</option>
+    </select>
+
+    <label for="networking">Networking:</label>
+    <select id="networking" name="networking">
+        <option value="none" selected>None</option>
+        <option value="ktor">Ktor</option>
+        <option value="graphql">GraphQL</option>
+    </select>
+
+    <label for="navigation">Navigation:</label>
+    <select id="navigation" name="navigation">
+        <option value="none" selected>None</option>
+        <option value="compose_navigation">Compose Navigation</option>
+        <option value="voyager_navigation">Voyager Navigation</option>
+    </select>
+
+    <label for="view_model">View Model:</label>
+    <select id="view_model" name="view_model">
+        <option value="none" selected>None</option>
+        <option value="decompose">Decompose</option>
+        <option value="view_model">View Model</option>
+        <option value="voyager_screen_model">Voyager Screen Model</option>
+    </select>
+
+    <label for="local_storage">Local Storage:</label>
+    <select id="local_storage" name="local_storage">
+        <option value="none" selected>None</option>
+        <option value="sql_delight">SQLDelight</option>
+        <option value="realm">Realm</option>
+    </select>
+
+    <label for="local_preferences">Local Preferences:</label>
+    <select id="local_preferences" name="local_preferences">
+        <option value="none" selected>None</option>
+        <option value="multiplatform_settings">Multiplatform Settings</option>
+    </select>
+
+    <button onclick="triggerWorkflow()">Generate Repository</button>
+</form>
+
+<script>
+    function triggerWorkflow() {
+        // Get input values from the form
+        const packageName = document.getElementById('package_name').value;
+        const ui = document.getElementById('ui').value;
+        const di = document.getElementById('di').value;
+        const networking = document.getElementById('networking').value;
+        const navigation = document.getElementById('navigation').value;
+        const viewModel = document.getElementById('view_model').value;
+        const localStorage = document.getElementById('local_storage').value;
+        const localPreferences = document.getElementById('local_preferences').value;
+
+        // Construct the workflow dispatch URL
+        const workflowDispatchUrl = `https://api.github.com/repos/{owner}/{repo}/actions/workflows/template_configuration.yml/dispatches`; // Replace with your workflow file path
+        const requestBody = {
+            ref: 'main', // Replace with your branch name
+            inputs: {
+                package_name: packageName,
+                ui: ui,
+                di: di,
+                networking: networking,
+                navigation: navigation,
+                view_model: viewModel,
+                local_storage: localStorage,
+                local_preferences: localPreferences
+            }
+        };
+
+        // Send the request to trigger the workflow
+        fetch(workflowDispatchUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'token {your_github_token}' // Replace with your GitHub token
+            },
+            body: JSON.stringify(requestBody)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Workflow triggered successfully!');
+            } else {
+                alert('Error triggering workflow.');
+            }
+        });
+    }
+</script>
+</body>
+</html>
