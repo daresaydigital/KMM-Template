@@ -100,7 +100,7 @@
         const localPreferences = document.getElementById('local_preferences').value;
 
         // Construct the workflow dispatch URL
-        const workflowDispatchUrl = `https://api.github.com/repos/{owner}/{repo}/actions/workflows/template_configuration.yml/dispatches`; // Replace with your workflow file path
+        const workflowDispatchUrl = `https://api.github.com/repos/daresaydigital/KMM-Template-Wizard/actions/workflows/template_configuration.yml/dispatches`; // Replace with your workflow file path
         const requestBody = {
             ref: 'main', // Replace with your branch name
             inputs: {
