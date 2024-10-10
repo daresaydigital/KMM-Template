@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>FinalNewline:Greeting.kt$co.daresay.kmmtemplate.Greeting.kt</ID>
+    <ID>FinalNewline:Platform.android.kt$co.daresay.kmmtemplate.Platform.android.kt</ID>
+    <ID>FinalNewline:Platform.ios.kt$co.daresay.kmmtemplate.Platform.ios.kt</ID>
+    <ID>FinalNewline:Platform.kt$co.daresay.kmmtemplate.Platform.kt</ID>
+    <ID>MatchingDeclarationName:Platform.android.kt$AndroidPlatform : Platform</ID>
+    <ID>MatchingDeclarationName:Platform.ios.kt$IOSPlatform : Platform</ID>
+    <ID>NewLineAtEndOfFile:Greeting.kt$co.daresay.kmmtemplate.Greeting.kt</ID>
+    <ID>NewLineAtEndOfFile:Platform.android.kt$co.daresay.kmmtemplate.Platform.android.kt</ID>
+    <ID>NewLineAtEndOfFile:Platform.ios.kt$co.daresay.kmmtemplate.Platform.ios.kt</ID>
+    <ID>NewLineAtEndOfFile:Platform.kt$co.daresay.kmmtemplate.Platform.kt</ID>
+    <ID>SpacingAroundColon:Platform.ios.kt$IOSPlatform$:</ID>
+  </CurrentIssues>
+</SmellBaseline>

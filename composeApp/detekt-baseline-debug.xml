@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>FinalNewline:App.kt$co.daresay.kmmtemplate.App.kt</ID>
+    <ID>FinalNewline:MainActivity.kt$co.daresay.kmmtemplate.MainActivity.kt</ID>
+    <ID>FunctionNaming:App.kt$@Composable @Preview fun App()</ID>
+    <ID>FunctionNaming:MainActivity.kt$@Preview @Composable fun AppAndroidPreview()</ID>
+    <ID>ImportOrdering:App.kt$import androidx.compose.animation.AnimatedVisibility import androidx.compose.foundation.Image import androidx.compose.foundation.layout.Column import androidx.compose.foundation.layout.fillMaxWidth import androidx.compose.material.Button import androidx.compose.material.MaterialTheme import androidx.compose.material.Text import androidx.compose.runtime.* import androidx.compose.ui.Alignment import androidx.compose.ui.Modifier import org.jetbrains.compose.resources.painterResource import org.jetbrains.compose.ui.tooling.preview.Preview import kotlinproject.composeapp.generated.resources.Res import kotlinproject.composeapp.generated.resources.compose_multiplatform</ID>
+    <ID>NewLineAtEndOfFile:App.kt$co.daresay.kmmtemplate.App.kt</ID>
+    <ID>NewLineAtEndOfFile:MainActivity.kt$co.daresay.kmmtemplate.MainActivity.kt</ID>
+    <ID>NoWildcardImports:App.kt$import androidx.compose.runtime.*</ID>
+    <ID>SpacingAroundColon:MainApplication.kt$MainApplication$:</ID>
+    <ID>WildcardImport:App.kt$import androidx.compose.runtime.*</ID>
+  </CurrentIssues>
+</SmellBaseline>

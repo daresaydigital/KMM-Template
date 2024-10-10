@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>FinalNewline:Platform.android.kt$co.daresay.kmmtemplate.Platform.android.kt</ID>
+    <ID>MatchingDeclarationName:Platform.android.kt$AndroidPlatform : Platform</ID>
+    <ID>NewLineAtEndOfFile:Platform.android.kt$co.daresay.kmmtemplate.Platform.android.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>
