@@ -1,0 +1,16 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>ArgumentListWrapping:Drawable0.commonMain.kt$(setOf(), "composeResources/kotlinproject.composeapp.generated.resources/drawable/compose-multiplatform.xml", -1, -1)</ID>
+    <ID>FunctionNaming:Drawable0.commonMain.kt$private fun init_compose_multiplatform(): DrawableResource</ID>
+    <ID>ImportOrdering:Drawable0.commonMain.kt$import kotlin.OptIn import org.jetbrains.compose.resources.DrawableResource</ID>
+    <ID>ImportOrdering:Res.kt$import kotlin.ByteArray import kotlin.OptIn import kotlin.String import org.jetbrains.compose.resources.ExperimentalResourceApi import org.jetbrains.compose.resources.getResourceUri import org.jetbrains.compose.resources.readResourceBytes</ID>
+    <ID>Indentation:Drawable0.commonMain.kt$ </ID>
+    <ID>Indentation:Drawable0.commonMain.kt$CommonMainDrawable0$ </ID>
+    <ID>Indentation:Res.kt$ </ID>
+    <ID>Indentation:Res.kt$Res$ </ID>
+    <ID>NoTrailingSpaces:Drawable0.commonMain.kt$CommonMainDrawable0$ </ID>
+    <ID>Wrapping:Drawable0.commonMain.kt$(</ID>
+  </CurrentIssues>
+</SmellBaseline>
