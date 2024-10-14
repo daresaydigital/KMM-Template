@@ -1,4 +1,3 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -23,31 +22,6 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
 
-
-
-
-
-            //di dependencies
-
-
-
-
-            //networking dependencies
-
-
-
-
-            //navigation dependencies
-
-
-
-
-            //view_models dependencies
-
-
-
-
-
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -59,31 +33,6 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(projects.shared)
-
-
-
-
-
-            //di dependencies
-
-
-
-
-            //networking dependencies
-
-
-
-
-            //navigation dependencies
-
-
-
-
-            //view_models dependencies
-
-
-
-
 
         }
     }

@@ -28,86 +28,11 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
 
-
-
-
-
-            //di dependencies
-
-
-
-
-            //networking dependencies
-
-
-
-
-            //navigation dependencies
-
-
-
-
-            //view_models dependencies
-
-
-
-
-
         }
         commonMain.dependencies {
 
-
-
-
-
-            //di dependencies
-
-
-
-
-            //networking dependencies
-
-
-
-
-            //navigation dependencies
-
-
-
-
-            //view_models dependencies
-
-
-
-
-
         }
         iosMain.dependencies {
-
-
-
-
-
-            //di dependencies
-
-
-
-
-            //networking dependencies
-
-
-
-
-            //navigation dependencies
-
-
-
-
-            //view_models dependencies
-
-
-
-
 
         }
     }
