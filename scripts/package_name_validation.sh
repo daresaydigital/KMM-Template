@@ -25,8 +25,11 @@ keywords=(
 contains_keyword() {
     for part in "${package_parts[@]}"; do
         local string="$part"
+        echo "$string"
         for keyword in "${keywords[@]}"; do
-            if [[ "$string" == *"$keyword"* ]]; then
+            if [[ "$string" == "$keyword" ]]; then
+                echo "$string"
+                echo "$keyword"
                 return 0  # Found a keyword
             fi
         done
