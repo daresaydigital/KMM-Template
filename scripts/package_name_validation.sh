@@ -3,6 +3,9 @@
 # Input package name
 package_name="$1"
 
+# Split package name by dots into an array
+IFS='.' read -r -a package_parts <<< "$package_name"
+
 # Java and Kotlin keywords
 keywords=(
     "abstract" "assert" "boolean" "break" "byte" "case" "catch" "char" "class" "const"
@@ -20,11 +23,13 @@ keywords=(
 
 # Function to check if a string contains any of the keywords
 contains_keyword() {
-    local string="$1"
-    for keyword in "${keywords[@]}"; do
-        if [[ "$string" == *"$keyword"* ]]; then
-            return 0  # Found a keyword
-        fi
+    for part in "${package_parts[@]}"; do
+        local string="$part"
+        for keyword in "${keywords[@]}"; do
+            if [[ "$string" == *"$keyword"* ]]; then
+                return 0  # Found a keyword
+            fi
+        done
     done
     return 1  # No keywords found
 }
