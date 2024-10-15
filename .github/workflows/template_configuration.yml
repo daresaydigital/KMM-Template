@@ -124,7 +124,7 @@ jobs:
           if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
             BRANCH="${{ github.event.inputs.di }}_swift_ui"  
           else  
-            BRANCH="${{ github.event.inputs.local_storage }}"  
+            BRANCH="${{ github.event.inputs.di }}"  
           fi  
           git merge origin/$BRANCH || {
             scripts/fix_conflicts.sh
