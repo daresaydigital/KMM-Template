@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.apollo)
 }
 
 kotlin {
@@ -43,11 +44,18 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+            implementation(libs.apollo.runtime)
 
         }
         iosMain.dependencies {
 
         }
+    }
+}
+
+apollo {
+    service("service") {
+        packageName.set("co.daresay.kmmtemplate")
     }
 }
 
