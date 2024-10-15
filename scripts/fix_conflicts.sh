@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Files to process
-files=("shared/build.gradle.kts" "gradle/libs.versions.toml")
+files=("shared/build.gradle.kts" "gradle/libs.versions.toml" "composeApp/build.gradle.kts")
 
 # Iterate through each file
 for file in "${files[@]}"; do
