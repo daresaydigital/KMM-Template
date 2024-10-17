@@ -1,6 +1,6 @@
 # KMMTemplateWizard
 
-[![GitHub Actions Status](https://github.com/daresaydigital/KMM-Template-Wizard/workflows/CI/badge.svg)](https://github.com/daresaydigital/KMM-Template-Wizard/actions)
+[![Template configuration for KMM project](https://github.com/daresaydigital/KMM-Template-Wizard/actions/workflows/template_configuration.yml/badge.svg)](https://github.com/daresaydigital/KMM-Template-Wizard/actions/workflows/template_configuration.yml)
 
 KMMTemplateWizard is a GitHub Action that helps you generate a KMM (Kotlin Multiplatform Mobile) project with your desired dependencies. It provides a user-friendly wizard that allows you to select the dependencies you need, and then automatically generates the project structure and configuration files.
 
