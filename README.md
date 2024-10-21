@@ -27,7 +27,11 @@ While these dependencies are implemented, there are still many more options avai
 
 ## How to Contribute
 
-We welcome contributions from the community! If you'd like to contribute to KMMTemplate, please follow these steps in [CONTRIBUTING](CONTRIBUTING)
+We welcome contributions from the community! If you'd like to contribute to KMMTemplate, please follow these steps in [CONTRIBUTING](https://github.com/daresaydigital/KMM-Template/blob/master/.github/CONTRIBUTING.md)
+
+## Articles
+
+A short [story](https://medium.com/@yaugenslizh/quick-start-a-kmm-project-with-dependencies-aeff724c61e2) about the motivation behind creating the project.
 
 ## License
 
