@@ -261,7 +261,7 @@ jobs:
             fi
           done
 
-          echo "::set-output name=repository_name::$NAME"
+          echo "repository_name=$NAME" >> $GITHUB_OUTPUT
 
       - name: Upload project artifact
         uses: actions/upload-artifact@v4
