@@ -1,3 +1,4 @@
+![KMM Template Header](https://github.com/daresaydigital/KMM-Template/blob/master/assets/Header.png)
 # KMMTemplate
 
 [![Template configuration for KMM project](https://github.com/daresaydigital/KMM-Template-Wizard/actions/workflows/template_configuration.yml/badge.svg)](https://github.com/daresaydigital/KMM-Template-Wizard/actions/workflows/template_configuration.yml)
