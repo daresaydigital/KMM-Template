@@ -27,12 +27,17 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
 
         }
         commonMain.dependencies {
+            implementation(libs.ktor.client.core)
+            implementation(libs.kotlinx.coroutines.core)
 
         }
         iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
 
         }
     }
