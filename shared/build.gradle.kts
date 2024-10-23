@@ -33,6 +33,7 @@ kotlin {
         }
         commonMain.dependencies {
             implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging.jvm)
             implementation(libs.kotlinx.coroutines.core)
 
         }
