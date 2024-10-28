@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.serialization)
 }
 
 kotlin {
@@ -27,12 +28,22 @@ kotlin {
     
     sourceSets {
         androidMain.dependencies {
+            implementation(libs.ktor.client.okhttp)
+            implementation(libs.kotlinx.coroutines.android)
 
         }
         commonMain.dependencies {
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.logging.jvm)
+            implementation(libs.kotlinx.coroutines.core)
+            implementation(libs.kotlinx.serialization.json)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.kotlinx.datetime)
 
         }
         iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
 
         }
     }
