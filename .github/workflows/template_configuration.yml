@@ -220,10 +220,11 @@ jobs:
           fi  
           git merge origin/$BRANCH || {
             git checkout --ours shared/build.gradle.kts
-            scripts/add_dependencies.sh
-            git add shared/build.gradle.kts 
             scripts/fix_conflicts.sh
             git add .
+            git commit -m "Fixed merge conflicts"
+            scripts/add_dependencies.sh origin/"${{ github.event.inputs.ui }}" origin/${BRANCH}
+            git add shared/build.gradle.kts 
             git commit -m "Fixed merge conflicts"
           }
         continue-on-error: true
