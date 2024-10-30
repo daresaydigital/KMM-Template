@@ -133,21 +133,6 @@ jobs:
           }
         continue-on-error: true
 
-      - name: Merge Networking branch
-        if: github.event.inputs.networking != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.networking }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.networking }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
-        continue-on-error: true
-
       - name: Merge Navigation branch
         if: github.event.inputs.navigation != 'none'
         run: |
@@ -219,6 +204,24 @@ jobs:
             BRANCH="${{ github.event.inputs.linter }}"  
           fi  
           git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge Networking branch
+        if: github.event.inputs.networking != 'none'
+        run: |
+          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ github.event.inputs.networking }}_swift_ui"  
+          else  
+            BRANCH="${{ github.event.inputs.networking }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            git checkout --ours shared/build.gradle.kts
+            scripts/add_dependencies.sh
+            git add shared/build.gradle.kts 
             scripts/fix_conflicts.sh
             git add .
             git commit -m "Fixed merge conflicts"
