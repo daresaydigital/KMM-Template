@@ -10,15 +10,25 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Determine branch
+      shell: bash
+      run: |
+        if [[ "${{ inputs.ui }}" == "compose_swift_ui" ]]; then
+          BRANCH="${{ inputs.branch }}_swift_ui"
+        else
+          BRANCH="${{ inputs.branch }}"
+        fi
+        echo "BRANCH=$BRANCH" >> $GITHUB_ENV
     - name: Merge branch
       shell: bash
       run: |
-        git merge origin/${{ inputs.branch }} || {
+        echo $BRANCH
+        git merge origin/$BRANCH || {
           git checkout --ours shared/build.gradle.kts
           scripts/fix_conflicts.sh
           git add .
           git commit -m "Fixed merge conflicts"
-          scripts/add_dependencies.sh origin/${{ inputs.ui }} origin/${{ inputs.branch }}
+          scripts/add_dependencies.sh origin/${{ inputs.ui }} origin/$BRANCH
           git add shared/build.gradle.kts
           git commit -m "Fixed merge conflicts"
         }

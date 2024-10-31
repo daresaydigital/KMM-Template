@@ -210,18 +210,27 @@ jobs:
           }
         continue-on-error: true
 
-      - name: Merge Networking branch
+#      - name: Merge Networking branch
+#        if: github.event.inputs.networking != 'none'
+#        run: |
+#          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then
+#            BRANCH="${{ github.event.inputs.networking }}_swift_ui"
+#          else
+#            BRANCH="${{ github.event.inputs.networking }}"
+#          fi
+#          uses: ./.github/actions/resolve-merge-conflicts
+#          with:
+#            branch: ${{ env.BRANCH }}
+#            ui: ${{ github.event.inputs.ui }}
+#        shell: bash
+#        continue-on-error: true
+
+      - name: Merge Networking branch new
         if: github.event.inputs.networking != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.networking }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.networking }}"  
-          fi  
-          uses: ./.github/actions/resolve-merge-conflicts
-          with:
-            branch: ${{ env.BRANCH }}
-            ui: ${{ github.event.inputs.ui }}
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.networking }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Rename project package
