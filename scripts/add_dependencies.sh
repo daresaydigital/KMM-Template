@@ -47,12 +47,26 @@ while IFS= read -r plugin; do
     echo "-----------------------------"
 done <<< "$plugins"
 
-
 # Add dependencies for each target block
 add_lines "androidMain.dependencies"
 add_lines "commonMain.dependencies"
 add_lines "iosMain.dependencies"
 
+# Extract remaining diff lines that are not part of the plugins or dependencies blocks
+remaining_diff=$(echo "$diff_output" | grep "^+" | grep -v "alias" | grep -v "implementation" | grep -v "++ b/shared/build.gradle.kts" | sed 's/^+//')
+
+# Append remaining diff lines to the end of the file
+if [ -n "$remaining_diff" ]; then
+  echo "-----------------------------"
+  echo "Appending remaining diff to the end of the file:"
+  echo "$remaining_diff"
+  echo "-----------------------------"
+  echo "$remaining_diff" >> shared/build.gradle.kts
+fi
+
+# Remove duplicate lines containing 'alias' or 'implementation' from the file
+awk '/alias|implementation/ { if (!seen[$0]++) print; next } { print }' shared/build.gradle.kts > temp && mv temp shared/build.gradle.kts
+
 echo "-----------------------------"
-echo "Dependencies and plugins added successfully."
+echo "Dependencies, plugins, and remaining diff added successfully."
 echo "-----------------------------"
