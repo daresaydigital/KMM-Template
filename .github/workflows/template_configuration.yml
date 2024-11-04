@@ -163,20 +163,29 @@ jobs:
           }
         continue-on-error: true
 
+#      - name: Merge Local Storage Branch
+#        id: merge-branch-local-storage
+#        if: github.event.inputs.local_storage != 'none'
+#        run: |
+#          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then
+#            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"
+#          else
+#            BRANCH="${{ github.event.inputs.local_storage }}"
+#          fi
+#          git merge origin/$BRANCH || {
+#            scripts/fix_conflicts.sh
+#            git add .
+#            git commit -m "Fixed merge conflicts"
+#          }
+#        continue-on-error: true
+
       - name: Merge Local Storage Branch
         id: merge-branch-local-storage
         if: github.event.inputs.local_storage != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.local_storage }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.local_storage }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge Local Preferences Branch
