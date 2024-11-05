@@ -5,24 +5,43 @@ on:
     branches:
       - master
 
-
 jobs:
   template_checking:
     runs-on: ubuntu-latest
 
-    env:
-      PACKAGE_NAME: 'my.fancy.pack'
-      UI: compose_swift_ui
-      DI: koin
-      NETWORKING: ktor
-      NAVIGATION: voyager_navigation
-      VIEW_MODEL: view_model
-      LOCAL_STORAGE: sql_delight
-      LOCAL_PREFERENCES: multiplatform_settings
-      LINTER: detekt
+    strategy:
+      matrix:
+        env:
+          - PACKAGE_NAME: 'my.fancy.pack'
+            UI: compose_swift_ui
+            DI: koin
+            NETWORKING: ktor
+            NAVIGATION: voyager_navigation
+            VIEW_MODEL: view_model
+            LOCAL_STORAGE: sql_delight
+            LOCAL_PREFERENCES: multiplatform_settings
+            LINTER: none
+          - PACKAGE_NAME: 'another.fancy.pack'
+            UI: compose_swift_ui
+            DI: koin
+            NETWORKING: graphql
+            NAVIGATION: compose_navigation
+            VIEW_MODEL: view_model
+            LOCAL_STORAGE: sql_delight
+            LOCAL_PREFERENCES: multiplatform_settings
+            LINTER: none
+
+    env: ${{ matrix.env }}
       
 
     steps:
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: temurin
+          node20: true
+
       - name: Checkout code
         uses: actions/checkout@v4
         with:
@@ -49,6 +68,8 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
+          git add .
+          git commit -m "Added ancommeted changes"
           git checkout $UI
           git checkout -b kmm_template
 
@@ -61,51 +82,29 @@ jobs:
 
       - name: Merge DI branch
         if: env.DI != 'none'
-        run: |
-          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ env.DI }}_swift_ui"  
-          else  
-            BRANCH="${{ env.DI }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.DI }}
+          ui: ${{ env.UI }}
         continue-on-error: true
 
       - name: Merge Navigation branch
         if: env.NAVIGATION != 'none'
-        run: |
-          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ env.NAVIGATION }}_swift_ui"  
-          else  
-            BRANCH="${{ env.NAVIGATION }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.NAVIGATION }}
+          ui: ${{ env.UI }}
         continue-on-error: true
 
       - name: Merge View Model branch
         if: env.VIEW_MODEL != 'none'
-        run: |
-          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ env.VIEW_MODEL }}_swift_ui"  
-          else  
-            BRANCH="${{ env.VIEW_MODEL }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.VIEW_MODEL }}
+          ui: ${{ env.UI }}
         continue-on-error: true
 
       - name: Merge Local Storage Branch
-        id: merge-branch-local-storage
         if: env.LOCAL_STORAGE != 'none'
         uses: ./.github/actions/resolve-merge-conflicts
         with:
@@ -114,34 +113,19 @@ jobs:
         continue-on-error: true
 
       - name: Merge Local Preferences Branch
-        id: merge-branch
         if: env.LOCAL_PREFERENCES != 'none'
-        run: |
-          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ env.LOCAL_PREFERENCES }}_swift_ui"  
-          else  
-            BRANCH="${{ env.LOCAL_PREFERENCES }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.LOCAL_PREFERENCES }}
+          ui: ${{ env.UI }}
         continue-on-error: true
 
       - name: Merge Linter Branch
         if: env.LINTER != 'none'
-        run: |
-          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ env.LINTER }}_swift_ui"  
-          else  
-            BRANCH="${{ env.LINTER }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.LINTER }}
+          ui: ${{ env.UI }}
         continue-on-error: true
 
       - name: Merge Networking branch new
@@ -170,9 +154,9 @@ jobs:
 
       - name: Sync project and run build
         run: ./gradlew build
-        continue-on-error: true
 
       - name: Specify name of repository
+        if: always()
         id: repository_name
         run: |
           UI="${{ env.UI }}"
@@ -195,6 +179,7 @@ jobs:
           echo "repository_name=$NAME" >> $GITHUB_OUTPUT
 
       - name: Upload project artifact
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: "template_with_${{ steps.repository_name.outputs.repository_name }}"
