@@ -108,6 +108,8 @@ jobs:
 
       - name: Creating kmm_template branch
         run: |
+          git add .
+          git commit -m "Added ancommeted changes"
           git checkout ${{ github.event.inputs.ui }}
           git checkout -b kmm_template
 
@@ -120,51 +122,29 @@ jobs:
 
       - name: Merge DI branch
         if: github.event.inputs.di != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.di }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.di }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.di }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge Navigation branch
         if: github.event.inputs.navigation != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.navigation }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.navigation }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.navigation }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge View Model branch
         if: github.event.inputs.view_model != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.view_model }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.view_model }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.view_model }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge Local Storage Branch
-        id: merge-branch-local-storage
         if: github.event.inputs.local_storage != 'none'
         uses: ./.github/actions/resolve-merge-conflicts
         with:
@@ -173,34 +153,19 @@ jobs:
         continue-on-error: true
 
       - name: Merge Local Preferences Branch
-        id: merge-branch
         if: github.event.inputs.local_preferences != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.local_preferences }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.local_preferences }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.local_preferences }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge Linter Branch
         if: github.event.inputs.linter != 'none'
-        run: |
-          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then  
-            BRANCH="${{ github.event.inputs.linter }}_swift_ui"  
-          else  
-            BRANCH="${{ github.event.inputs.linter }}"  
-          fi  
-          git merge origin/$BRANCH || {
-            scripts/fix_conflicts.sh
-            git add .
-            git commit -m "Fixed merge conflicts"
-          }
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ github.event.inputs.linter }}
+          ui: ${{ github.event.inputs.ui }}
         continue-on-error: true
 
       - name: Merge Networking branch new

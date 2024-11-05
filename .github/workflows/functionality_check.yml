@@ -30,6 +30,14 @@ jobs:
             LOCAL_STORAGE: sql_delight
             LOCAL_PREFERENCES: multiplatform_settings
             LINTER: none
+          - PACKAGE_NAME: 'superb.duper.pack'
+            DI: koin
+            NETWORKING: ktor
+            NAVIGATION: voyager_navigation
+            VIEW_MODEL: view_model
+            LOCAL_STORAGE: sql_delight
+            LOCAL_PREFERENCES: multiplatform_settings
+            LINTER: none
 
     env: ${{ matrix.env }}
       
