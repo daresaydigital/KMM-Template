@@ -163,22 +163,6 @@ jobs:
           }
         continue-on-error: true
 
-#      - name: Merge Local Storage Branch
-#        id: merge-branch-local-storage
-#        if: github.event.inputs.local_storage != 'none'
-#        run: |
-#          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then
-#            BRANCH="${{ github.event.inputs.local_storage }}_swift_ui"
-#          else
-#            BRANCH="${{ github.event.inputs.local_storage }}"
-#          fi
-#          git merge origin/$BRANCH || {
-#            scripts/fix_conflicts.sh
-#            git add .
-#            git commit -m "Fixed merge conflicts"
-#          }
-#        continue-on-error: true
-
       - name: Merge Local Storage Branch
         id: merge-branch-local-storage
         if: github.event.inputs.local_storage != 'none'
@@ -218,21 +202,6 @@ jobs:
             git commit -m "Fixed merge conflicts"
           }
         continue-on-error: true
-
-#      - name: Merge Networking branch
-#        if: github.event.inputs.networking != 'none'
-#        run: |
-#          if [[ "${{ github.event.inputs.ui }}" == "compose_swift_ui" ]]; then
-#            BRANCH="${{ github.event.inputs.networking }}_swift_ui"
-#          else
-#            BRANCH="${{ github.event.inputs.networking }}"
-#          fi
-#          uses: ./.github/actions/resolve-merge-conflicts
-#          with:
-#            branch: ${{ env.BRANCH }}
-#            ui: ${{ github.event.inputs.ui }}
-#        shell: bash
-#        continue-on-error: true
 
       - name: Merge Networking branch new
         if: github.event.inputs.networking != 'none'

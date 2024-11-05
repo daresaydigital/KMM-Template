@@ -1,0 +1,202 @@
+name: Check correctness template generation functionality
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  template_checking:
+    runs-on: ubuntu-latest
+
+    env:
+      PACKAGE_NAME: 'my.fancy.pack'
+      UI: compose_swift_ui
+      DI: koin
+      NETWORKING: ktor
+      NAVIGATION: voyager_navigation
+      VIEW_MODEL: view_model
+      LOCAL_STORAGE: sql_delight
+      LOCAL_PREFERENCES: multiplatform_settings
+      LINTER: detekt
+      
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: master
+
+      - name: Install latest Git
+        run: sudo apt-get update && sudo apt-get install -y git
+
+      - name: Making scripts runnable
+        run: chmod +x scripts/*.sh
+
+      - name: Package name validation
+        run: |
+          scripts/package_name_validation.sh ${{ env.PACKAGE_NAME }}
+
+      - name: Fetch all branches
+        run: git fetch --all
+
+      - name: Git configuration
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "Github@action.com"
+
+      - name: Creating kmm_template branch
+        run: |
+          git checkout $UI
+          git checkout -b kmm_template
+
+      - name: Merge UI branch
+        run: |
+          git merge -m "Merge message" master --allow-unrelated-histories || {
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+
+      - name: Merge DI branch
+        if: env.DI != 'none'
+        run: |
+          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ env.DI }}_swift_ui"  
+          else  
+            BRANCH="${{ env.DI }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge Navigation branch
+        if: env.NAVIGATION != 'none'
+        run: |
+          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ env.NAVIGATION }}_swift_ui"  
+          else  
+            BRANCH="${{ env.NAVIGATION }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge View Model branch
+        if: env.VIEW_MODEL != 'none'
+        run: |
+          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ env.VIEW_MODEL }}_swift_ui"  
+          else  
+            BRANCH="${{ env.VIEW_MODEL }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge Local Storage Branch
+        id: merge-branch-local-storage
+        if: env.LOCAL_STORAGE != 'none'
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.LOCAL_STORAGE }}
+          ui: ${{ env.UI }}
+        continue-on-error: true
+
+      - name: Merge Local Preferences Branch
+        id: merge-branch
+        if: env.LOCAL_PREFERENCES != 'none'
+        run: |
+          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ env.LOCAL_PREFERENCES }}_swift_ui"  
+          else  
+            BRANCH="${{ env.LOCAL_PREFERENCES }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge Linter Branch
+        if: env.LINTER != 'none'
+        run: |
+          if [[ "${{ env.UI }}" == "compose_swift_ui" ]]; then  
+            BRANCH="${{ env.LINTER }}_swift_ui"  
+          else  
+            BRANCH="${{ env.LINTER }}"  
+          fi  
+          git merge origin/$BRANCH || {
+            scripts/fix_conflicts.sh
+            git add .
+            git commit -m "Fixed merge conflicts"
+          }
+        continue-on-error: true
+
+      - name: Merge Networking branch new
+        if: env.NETWORKING != 'none'
+        uses: ./.github/actions/resolve-merge-conflicts
+        with:
+          branch: ${{ env.NETWORKING }}
+          ui: ${{ env.UI }}
+        continue-on-error: true
+
+      - name: Rename project package
+        if: env.PACKAGE_NAME != 'none'
+        run: |
+          echo "${{ env.PACKAGE_NAME }}"
+          echo 's/co.daresay.kmmtemplate/${{ env.PACKAGE_NAME }}/g'
+          echo 's/co.daresay.kmmtemplate/"${{ env.PACKAGE_NAME }}/g"'
+          ls
+          pwd
+          ./scripts/rename_package.sh ${{ env.PACKAGE_NAME }}
+
+      - name: Removing unnecessary files and folders
+        run: |
+          rm -rf ./git
+          rm -rf ./github
+          rm -rf scripts
+
+      - name: Sync project and run build
+        run: ./gradlew build
+        continue-on-error: true
+
+      - name: Specify name of repository
+        id: repository_name
+        run: |
+          UI="${{ env.UI }}"
+          DI="${{ env.DI }}"
+          NETWORKING="${{ env.NETWORKING }}"
+          NAVIGATION="${{ env.NAVIGATION }}"
+          VIEW_MODEL="${{ env.VIEW_MODEL }}"
+          LOCAL_STORAGE="${{ env.LOCAL_STORAGE }}"
+          LOCAL_PREFERENCES="${{ env.LOCAL_PREFERENCES }}"
+          LINTER="${{ env.LINTER }}"
+          NAME=""
+
+          for item in "$UI" "$DI" "$NETWORKING" "$NAVIGATION" "$VIEW_MODEL" "$LOCAL_STORAGE" "$LOCAL_PREFERENCES" "$LINTER"; do
+            if [ "$item" != "none" ]; then
+              [ -n "$NAME" ] && NAME="${NAME}_"
+              NAME="${NAME}${item}"
+            fi
+          done
+
+          echo "repository_name=$NAME" >> $GITHUB_OUTPUT
+
+      - name: Upload project artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: "template_with_${{ steps.repository_name.outputs.repository_name }}"
+          path: .
+          retention-days: 1
