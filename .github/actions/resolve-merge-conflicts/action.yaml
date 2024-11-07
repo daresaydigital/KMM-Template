@@ -24,12 +24,12 @@ runs:
       run: |
         echo $BRANCH
         git merge origin/$BRANCH || {
-          git checkout --ours shared/build.gradle.kts
+          if [[ "${{ inputs.ui }}" == "compose_swift_ui" ]]; then git checkout --ours shared/build.gradle.kts; else git checkout --ours composeApp/build.gradle.kts; fi
           scripts/fix_conflicts.sh
           git add .
           git commit -m "Fixed merge conflicts"
           scripts/add_dependencies.sh origin/${{ inputs.ui }} origin/$BRANCH
           scripts/remove_duplications_in_toml_file.sh
-          git add shared/build.gradle.kts
+          if [[ "${{ inputs.ui }}" == "compose_swift_ui" ]]; then git add shared/build.gradle.kts; else git add composeApp/build.gradle.kts; fi
           git commit -m "Fixed merge conflicts"
         }
