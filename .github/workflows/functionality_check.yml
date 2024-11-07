@@ -31,6 +31,7 @@ jobs:
             LOCAL_PREFERENCES: multiplatform_settings
             LINTER: none
           - PACKAGE_NAME: 'superb.duper.pack'
+            UI: compose
             DI: koin
             NETWORKING: ktor
             NAVIGATION: voyager_navigation
@@ -161,7 +162,7 @@ jobs:
           rm -rf scripts
 
       - name: Sync project and run build
-        run: ./gradlew build
+        run: ./gradlew assembleDebug
 
       - name: Specify name of repository
         if: always()
