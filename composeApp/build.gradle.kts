@@ -36,6 +36,7 @@ kotlin {
 
         }
         commonMain.dependencies {
+            implementation(libs.apollo.runtime)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
@@ -44,7 +45,6 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
-            implementation(libs.apollo.runtime)
 
         }
         iosMain.dependencies {
