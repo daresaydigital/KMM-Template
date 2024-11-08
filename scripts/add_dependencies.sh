@@ -5,12 +5,11 @@ branch1="$1"
 branch2="$2"
 
 # Determine the file path based on the branch1 value
-if [[ "$branch1" == "compose_swift_ui" ]]; then
+if [[ "$branch1" == "origin/compose_swift_ui" ]]; then
   file_path="shared/build.gradle.kts"
 else
   file_path="composeApp/build.gradle.kts"
 fi
-
 # Get the diff output and extract dependency lines
 diff_output=$(git diff "$branch1" "$branch2" -- "$file_path")
 echo "-----------------------------"
