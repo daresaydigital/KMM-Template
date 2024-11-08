@@ -20,7 +20,7 @@ jobs:
             VIEW_MODEL: view_model
             LOCAL_STORAGE: sql_delight
             LOCAL_PREFERENCES: multiplatform_settings
-            LINTER: none
+            LINTER: detekt
           - PACKAGE_NAME: 'another.fancy.pack'
             UI: compose_swift_ui
             DI: koin
@@ -29,7 +29,7 @@ jobs:
             VIEW_MODEL: view_model
             LOCAL_STORAGE: sql_delight
             LOCAL_PREFERENCES: multiplatform_settings
-            LINTER: none
+            LINTER: detekt
           - PACKAGE_NAME: 'superb.duper.pack'
             UI: compose
             DI: koin
@@ -38,7 +38,16 @@ jobs:
             VIEW_MODEL: view_model
             LOCAL_STORAGE: sql_delight
             LOCAL_PREFERENCES: multiplatform_settings
-            LINTER: none
+            LINTER: detekt
+          - PACKAGE_NAME: 'none'
+            UI: compose
+            DI: koin
+            NETWORKING: graphql
+            NAVIGATION: compose_navigation
+            VIEW_MODEL: view_model
+            LOCAL_STORAGE: sql_delight
+            LOCAL_PREFERENCES: multiplatform_settings
+            LINTER: detekt
 
     env: ${{ matrix.env }}
       

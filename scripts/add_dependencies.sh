@@ -29,7 +29,12 @@ add_lines() {
   fi
 
   while IFS= read -r line; do
+    echo "-----------------------------"
+    echo "Adding line: $line"
+    echo "Target block: $target_block"
+    echo "File path: $file_path"
     sed -i "/$target_block {/,/}/s/$target_block {/$target_block {\n$line/1" "$file_path"
+    echo "-----------------------------"
   done <<< "$lines"
 }
 
