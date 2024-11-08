@@ -14,17 +14,6 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
-
-    detekt {
-        // Specify detekt configuration especially for shared module
-        config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
-        buildUponDefaultConfig = true
-        source.setFrom("src/commonMain/kotlin", "src/androidMain/kotlin", "src/iosMain/kotlin")
-        dependencies {
-            detektPlugins(libs.detekt.formatting)
-        }
-    }
 
     listOf(
         iosX64(),
@@ -59,6 +48,16 @@ android {
     }
     defaultConfig {
         minSdk = libs.versions.android.minSdk.get().toInt()
+    }
+}
+
+detekt {
+    // Specify detekt configuration especially for shared module
+    config.setFrom(files("$rootDir/config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+    source.setFrom("src/commonMain/kotlin", "src/androidMain/kotlin", "src/iosMain/kotlin")
+    dependencies {
+        detektPlugins(libs.detekt.formatting)
     }
 }
 
